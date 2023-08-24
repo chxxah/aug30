@@ -32,5 +32,11 @@
 		UPDATE notice SET ndel = if(ndel = 1, 0, 1)
 		WHERE nno=#{nno}
 	</update>
+	
+	<select id="multiBoard" resultType="Map">
+		SELECT *
+		FROM setupboard
+		ORDER BY b_no ASC
+	</select>
 
 </mapper>

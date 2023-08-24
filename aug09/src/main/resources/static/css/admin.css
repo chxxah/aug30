@@ -17,6 +17,17 @@ body {
 	float: left;
 	overflow: hidden;
 }
+.menu-logo{
+	padding-top: 10px;
+	padding-left: 10px;
+	height: auto;
+	box-sizing: border-box;
+	width: 70%;
+}
+.menu-logo img{
+	width: 100%;
+	text-align: center;
+}
 .menu:hover{
 	width: 200px;
 	transition: 0.5s;

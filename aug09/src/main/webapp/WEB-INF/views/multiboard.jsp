@@ -50,6 +50,13 @@
  <!-- Masthead-->
         <header class="masthead">
             <div class="container">
+            	<c:forEach items="${boardlist}" var="l">
+            		<!-- a링크일 때 -->
+            		<%-- <a href="${l.b_url}">${l.b_catename }</a> --%>
+            		
+            		<!-- 버튼일 때 -->
+            		<button onclick="location.href='${l.b_url}'">${l.b_catename }</button>
+            	</c:forEach>
                <h1>multiboard</h1><c:choose><c:when test="${fn:length(list) gt 0 }">
                	<table class="table table-dark table-hover table-striped">
                		<thead>
@@ -62,8 +69,8 @@
                		</tr>
                		</thead>
                		<tbody><c:forEach items="${list }" var="row">
-               		<tr class="row detail" onclick="location.href='./mbdetail?mbno=${row.mb_no}'">
-               			<td class="col-1">${row.mb_no}</td>
+               		<tr class="row detail" onclick="location.href='./mbdetail?board=${param.board}&mbno=${row.mb_no }'" >
+               			<td class="col-1">${row.rowNum}</td>
                			<td class="col-6 title">${row.mb_title}</td>
                			<td class="col-2">${row.m_name}</td>
                			<td class="col-2">${row.mb_date}</td>

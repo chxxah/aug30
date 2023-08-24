@@ -19,6 +19,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -200,6 +201,16 @@ public class AdminController {
 		json.put("result", result);
 		
 		return json.toString();
+	}
+	
+	//멀티 보드 만들기(평소와 다른 방법으로 씀)
+	@RequestMapping(value="/multiBoard", method = RequestMethod.GET)
+	public String multiBoard(Model model) {
+		List<Map<String, Object>> list = adminService.multiBoard();
+		model.addAttribute("multiBoard", list);
+		System.out.println(list);
+		
+		return "admin/multiBoard";
 	}
 }
 
