@@ -27,11 +27,21 @@
 						<div class="div-cell">${row.b_no}</div>
 						<div class="div-cell">${row.mb_cate}</div>
 						<div class="div-cell">${row.b_catename}</div>
-						<div class="div-cell"><a href="${row.b_url}">보드로 이동</a></div>
+						<div class="div-cell"><a href=".${row.b_url}">보드로 이동</a></div>
 						<div class="div-cell">${row.b_comment}</div>
 					</div>
 					</c:forEach>
 				</div>
+				
+				<div class="input-form">
+					<form action="./multiBoard" method="post">
+						<input type="number" name="cateNum" required="required" placeholder="게시판 번호 입력">
+						<input type="text" name="name" required="required" placeholder="게시판 이름 입력">
+						<input type="text" name="comment" required="required" placeholder="참고사항">
+						<button type="submit">저장</button>
+					</form>
+				</div>
+				
 			</div>
 		</div>
 	</div>

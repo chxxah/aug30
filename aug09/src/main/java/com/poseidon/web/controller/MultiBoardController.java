@@ -32,7 +32,7 @@ public class MultiBoardController {
 		model.addAttribute("boardlist", boardlist);
 		//System.out.println(list);
 		//System.out.println(boardlist);
-//[{mb_cate=1, b_no=1, b_url=../multiboard?board=1, b_comment=게시글 관리, b_catename=메인게시판}, {mb_cate=2, b_no=2, b_url=../multiboard?board=2, b_comment=자유게시판, b_catename=자유게시판}, {mb_cate=3, b_no=3, b_url=../multiboard?board=3, b_comment=공지사항, b_catename=공지사항}, {mb_cate=4, b_no=4, b_url=../multiboard?board=4, b_comment=문의사항, b_catename=문의사항}]
+		//[{mb_cate=1, b_no=1, b_url=../multiboard?board=1, b_comment=게시글 관리, b_catename=메인게시판}, {mb_cate=2, b_no=2, b_url=../multiboard?board=2, b_comment=자유게시판, b_catename=자유게시판}, {mb_cate=3, b_no=3, b_url=../multiboard?board=3, b_comment=공지사항, b_catename=공지사항}, {mb_cate=4, b_no=4, b_url=../multiboard?board=4, b_comment=문의사항, b_catename=문의사항}]
 		return "multiboard";
 	}
 	

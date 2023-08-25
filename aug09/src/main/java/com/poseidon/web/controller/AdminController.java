@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -208,9 +209,34 @@ public class AdminController {
 	public String multiBoard(Model model) {
 		List<Map<String, Object>> list = adminService.multiBoard();
 		model.addAttribute("multiBoard", list);
-		System.out.println(list);
+		//System.out.println(list);
 		
 		return "admin/multiBoard";
+	}
+	
+	@PostMapping("/multiBoard")
+	public String multiBoard(@RequestParam Map<String, Object> map) {
+		//System.out.println(map);{cateNum=6, name=5, comment=5}
+		adminService.multiBoardInsert(map);
+		return "redirect:/admin/multiBoard";
+	}
+	
+	@GetMapping("/member")
+	public ModelAndView member() {
+		ModelAndView mv = new ModelAndView("admin/member");// admin/member로 이동하겠습니다.
+		List<String> memberList = adminService.memberList();
+		mv.addObject("memberList", memberList);
+		//System.out.println(mv);
+		return mv;
+	}
+	
+	// location href 쓸 때는 get방식임 (post를 써주지 않음)
+	@GetMapping("/gradeChange")
+	public String gradeChange(@RequestParam Map<String, Object> map) {
+		int result = adminService.gradeChange(map);
+		//System.out.println(map);{mno=1, grade=1}
+		//System.out.println(result);
+		return "redirect:/admin/member";
 	}
 }
 

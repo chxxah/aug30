@@ -62,6 +62,110 @@
 			}
 		}
 	</script>
+	
+	<script type="text/javascript">
+		$(function(){
+				alert("!");
+				// 쿠키 값 가져오기
+				let userID = getCookie("userID");// 아이디
+				let setCookieY = getCookie("setCookie");// Y
+				
+				// 쿠키 검사 -> 쿠키가 있다면 해당 쿠키에서 id값 가져와서 id 칸에 붙여넣기
+				if(setCookieY == 'Y'){
+					$("#saveID").prop("checked", true); 
+					$("#id").val(userID);
+					$("#pw").focus();
+				} else {
+					$("#saveID").prop("checked", false);
+				}
+				
+				// (쿠키가 있다면 = 아이디를 저장한 적이 있다면)
+		
+				
+			$("#login").click(function(){
+				// 아이디 패스워드 검사하기
+				let id = $("#id").val();// 사용자가 입력한 아이디 값
+				let pw = $("#pw").val();// 사용자가 입력한 패스워드 값
+				
+				if(id == '' || id.length < 3){
+					alert("올바른 아이디를 입력해주세요.");
+					$("#id").focus();
+					return false;
+				}
+				
+				if(pw == '' || pw.length < 3){
+					alert("올바른 암호를 입력해 주세요.");
+					$("#pw").focus();
+					return false;
+				}
+				
+				if($("#saveID").is(":checked")){//네모칸이 체크되어있다면
+					alert("체크되어 있습니다.");
+					setCookie("userID", id, 7);// 호출해서 사용
+					setCookie("setCookie", "Y", 7);
+					//
+				} else {
+					//alert("x");
+					//deleteCookie() 함수
+					deleteCookie("userID");
+					deleteCookie("setCookie");
+				}
+				let form = document.createElement("form");
+				form.setAttribute("action", "./login.sik");
+				form.setAttribute("method", "post");
+				
+				let idField = document.createElement("input");
+				idField.setAttribute("type", "hidden");
+				idField.setAttribute("name", "id");
+				idField.setAttribute("value", id);
+				form.appendChild(idField);
+				
+				let pwField = document.createElement("input");
+				pwField.setAttribute("type", "hidden");
+				pwField.setAttribute("name", "pw");
+				pwField.setAttribute("value", pw);
+				form.appendChild(pwField);
+				
+				document.body.appendChild(form);
+				form.submit();	
+			});
+		});
+		
+		// setCookie("변수명", 사용자가 입력한 ID, 유기간)
+		function setCookie(cookieName, value, exdays){
+			let exdate = new Date(); // 날짜 뽑아오기
+			exdate.setDate(exdate.getDate() + exdays);
+											//exdays가 널이라면 비워놓고 아니라면 뒤에를 함 (삼항연산자)
+			let cookieValue = value + ((exdays == null) ? "" : ";expires=" + exdate.toGMTString());
+			document.cookie = cookieName + "=" + cookieValue;
+			//                userID=peazh; expires=2023-08-30
+		}
+		
+		
+		// deleteCookie()
+		function deleteCookie(cookieName){
+			let expireDate = new Date();
+			expireDate.setDate(expireDate.getDate() -1);// 만료날짜를 어제로 바꿔줌
+			document.cookie = cookieName+"= "+";expires="+expireDate.toGMTString();
+		}
+		
+		// getCookie()
+		function getCookie(cookieName){
+			let x, y;
+			let val = document.cookie.split(";");
+			for(let i = 0; i < val.length; i++){
+				x = val[i].substr(0, val[i].indexOf("="));
+				y = val[i].substr(val[i].indexOf("=") + 1);
+				//x = x.replace(/^\s+|\s+$/g, '');// 공백 제거하는 역할
+				x = x.trim();
+				if(x == cookieName){
+					return y;
+				}
+			}
+		}
+		
+		
+	</script>
 </head>
 <body>
 <%@ include file="menu.jsp" %>
@@ -89,7 +193,13 @@
 				</div>
 				<div class="mb-3 row">
 					<div class="col-sm-12">
-						<input type="button" id="login" class="btn btn-primary" value="login" onclick="loginCheck()">
+						<input type="checkbox" class="saveID" id="saveID">
+						<label for="saveID">아이디 저장</label>
+					</div>
+				</div>
+				<div class="mb-3 row">
+					<div class="col-sm-12">
+						<input type="button" id="login" class="btn btn-primary" value="login"><!--  onclick="loginCheck() -->
 						<input type="button" id="join" class="btn btn-info" value="가입하기">
 					</div>
 				</div>
