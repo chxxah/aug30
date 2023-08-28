@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.mail.EmailException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -238,6 +239,47 @@ public class AdminController {
 		//System.out.println(result);
 		return "redirect:/admin/member";
 	}
+	
+	@GetMapping("/post")
+	// 									name과 value 둘 다 사용할 수 있음
+	public String post(Model model, @RequestParam(name="cate", required = false, defaultValue = "0") int cate,
+			@RequestParam Map<String, Object> map) {// cate를 제외한 녀석들이 map에 담김 (카테는 위에 적어줬으니까)
+		// 게시판 번호가 들어올 수 있음 (추후에)
+		
+		// 게시판 관리번호를 다 불러옴
+		
+		// map의 cate 값이 안 들어온다면 cate값을 0으로 넣어주기
+		if ( !(map.containsKey("cate")) || map.get("cate").equals(null) || map.get("cate").equals("") ) {// map에 cate 값이 없다면
+			map.put("cate", 0);
+		}
+		
+		System.out.println("cate : " + cate);// cate : 0
+		System.out.println("검색 : " + map);// 검색 : {searchV=2, cate=0}
+		
+		// 게시판 리스트 불러오기
+		List<Map<String, Object>> boardlist = adminService.boardlist();
+		model.addAttribute("boardlist", boardlist);
+		
+		// 게시판의 게시글 다 불러오기
+		List<Map<String, Object>> list = adminService.post(map);
+		model.addAttribute("list", list);
+		System.out.println(list);
+//[{mb_del=1, mb_content=<p>글을 써요<br></p>, m_no=3, mb_read=1, mb_date=2023-08-24 12:00:29.0, mb_board=2, mb_no=15, count=15, mb_title=자유게시판, m_id=park, b_catename=자유게시판}, {mb_del=1, mb_content=<p>문의사항~?<br></p>, m_no=3, mb_read=1, mb_date=2023-08-24 11:43:05.0, mb_board=4, mb_no=14, count=15, mb_title=문의사항을 올려봅니다., m_id=park, b_catename=문의사항}, {mb_del=1, mb_content=<p>글을 씁니다.<br></p>, m_no=3, mb_read=1, mb_date=2023-08-24 11:26:06.0, mb_board=2, mb_no=13, count=15, mb_title=자유게시판에 글을 써요, m_id=park, b_catename=자유게시판}, {mb_del=1, mb_content=<p>내용<br></p>, m_no=3, mb_read=1, mb_date=2023-08-17 16:41:41.0, mb_board=1, mb_no=12, count=15, mb_title=제목, m_id=park, b_catename=메인게시판}, {mb_del=1, mb_content=<p>엠엔오 오나요?<br></p>, m_no=3, mb_read=1, mb_date=2023-08-17 16:00:57.0, mb_board=1, mb_no=11, count=15, mb_title=테스트 해봅니다., m_id=park, b_catename=메인게시판}, {mb_del=1, mb_content=<p>최종입니다.<br></p>, m_no=3, mb_read=1, mb_date=2023-08-17 15:56:20.0, mb_board=1, mb_no=10, count=15, mb_title=최종 최종, m_id=park, b_catename=메인게시판}, {mb_del=1, mb_content=<p>써요<br></p>, m_no=3, mb_read=1, mb_date=2023-08-17 15:55:20.0, mb_board=1, mb_no=9, count=15, mb_title=글을, m_id=park, b_catename=메인게시판}, {mb_del=1, mb_content=<p>써요<br></p>, m_no=3, mb_read=1, mb_date=2023-08-17 15:54:26.0, mb_board=1, mb_no=8, count=15, mb_title=글을, m_id=park, b_catename=메인게시판}, {mb_del=1, mb_content=<p>써요<br></p>, m_no=3, mb_read=1, mb_date=2023-08-17 15:52:08.0, mb_board=1, mb_no=7, count=15, mb_title=글을, m_id=park, b_catename=메인게시판}, {mb_del=1, mb_content=<p>써요<br></p>, m_no=3, mb_read=1, mb_date=2023-08-17 15:52:08.0, mb_board=1, mb_no=6, count=15, mb_title=글을, m_id=park, b_catename=메인게시판}, {mb_del=1, mb_content=<p>키<br></p>, m_no=3, mb_read=1, mb_date=2023-08-17 15:50:54.0, mb_board=1, mb_no=5, count=15, mb_title=셀렉트키, m_id=park, b_catename=메인게시판}, {mb_del=1, mb_content=mb_no를 가져오기<br>, m_no=3, mb_read=1, mb_date=2023-08-17 15:48:32.0, mb_board=1, mb_no=4, count=15, mb_title=selectKey를 이용해서, m_id=park, b_catename=메인게시판}, {mb_del=1, mb_content=<p>dd<br></p>, m_no=3, mb_read=1, mb_date=2023-08-17 15:47:15.0, mb_board=1, mb_no=3, count=15, mb_title=dd, m_id=park, b_catename=메인게시판}, {mb_del=1, mb_content=<p>내용<br></p>, m_no=3, mb_read=1, mb_date=2023-08-17 15:35:09.0, mb_board=1, mb_no=2, count=15, mb_title=제목, m_id=park, b_catename=메인게시판}, {mb_del=1, mb_content=첫 글입니다., m_no=3, mb_read=1, mb_date=2023-08-17 11:09:14.0, mb_board=1, mb_no=1, count=15, mb_title=글을 씁니다., m_id=park, b_catename=메인게시판}]
+		
+		return "admin/post";
+	}
+	
+	@ResponseBody
+	@GetMapping("/detail")
+	public String detail(@RequestParam("mbno") int mbno) {
+		System.out.println(mbno);
+		//게시글 디테일 보여주기
+		JSONObject json = new JSONObject();
+		json.put("content", adminService.content(mbno));
+		System.out.println(json);//{"content":"<p>글을 써요<br><\/p>"}
+		return json.toString();
+	}
+	
 }
 
 

@@ -50,6 +50,20 @@ public class AdminService {
 		return adminDAO.gradeChange(map);
 	}
 
+	public List<Map<String, Object>> post(Map<String, Object> map) {
+		return adminDAO.post(map);
+	}
+
+	public List<Map<String, Object>> boardlist() {
+		return adminDAO.boardlist();
+	}
+
+	public String content(int mbno) {
+		return adminDAO.content(mbno);
+	}
+
+	
+
 	
 
 

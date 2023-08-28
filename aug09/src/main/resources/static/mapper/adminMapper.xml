@@ -52,5 +52,45 @@
 	<update id="gradeChange" parameterType="Map">
 		UPDATE members SET m_grade = #{grade} WHERE m_no=#{mno}
 	</update>
+	
+	<select id="post" parameterType="Map" resultType="Map">
+		SELECT mb.*, m.m_name, s.b_catename, m.m_id,
+	    	(SELECT COUNT(*) FROM multiboard mb, members m
+	    	<where>
+	    		AND mb.m_no=m.m_no
+				<if test="cate gt 0">AND mb_board = #{cate}</if>
+				<choose>
+					<when test="searchN == 'title'">AND mb_title LIKE CONCAT('%', #{searchV}, '%')</when>
+					<when test="searchN == 'content'">AND mb_content LIKE CONCAT('%', #{searchV}, '%')</when>
+					<when test="searchN == 'nick'">AND m_name LIKE CONCAT('%', #{searchV}, '%')</when>
+					<when test="searchN == 'id'">AND m_id LIKE CONCAT('%', #{searchV}, '%')</when>
+				</choose>
+			</where>
+	    	) AS count
+		FROM multiboard mb
+		JOIN members m ON mb.m_no = m.m_no
+		JOIN setupboard s ON mb.mb_board = s.mb_cate
+		<where>
+			<if test="cate gt 0">AND mb_board = #{cate}</if>
+			<choose>
+				<when test="searchN == 'title'">AND mb_title LIKE CONCAT('%', #{searchV}, '%')</when>
+				<when test="searchN == 'content'">AND mb_content LIKE CONCAT('%', #{searchV}, '%')</when>
+				<when test="searchN == 'nick'">AND m_name LIKE CONCAT('%', #{searchV}, '%')</when>
+				<when test="searchN == 'id'">AND m_id LIKE CONCAT('%', #{searchV}, '%')</when>
+			</choose>
+		</where>
+		ORDER BY mb.mb_no DESC
+	</select>
+	
+	<select id="boardlist" resultType="Map">
+		SELECT *
+		FROM setupboard 
+	</select>
+	
+	<select id="content" parameterType="Integer" resultType="String">
+		SELECT mb_content
+		FROM multiboard
+		WHERE mb_no = #{mbno}
+	</select>
 
 </mapper>
