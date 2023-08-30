@@ -54,7 +54,7 @@
 	</update>
 	
 	<select id="post" parameterType="Map" resultType="Map">
-		SELECT mb.*, m.m_name, s.b_catename, m.m_id,
+		SELECT mb.mb_no, mb.mb_title, mb.mb_read, mb.mb_del, mb.mb_board, mb.m_no, m.m_name, s.b_catename, m.m_id, DATE_FORMAT(mb.mb_date,"%Y-%m-%d") as mb_date,
 	    	(SELECT COUNT(*) FROM multiboard mb, members m
 	    	<where>
 	    		AND mb.m_no=m.m_no

@@ -11,8 +11,8 @@
 <script src="../js/jquery-3.7.0.min.js"></script>
 <style type="text/css">
 	 .boardlist {
-        margin: 20px auto; /* 수평 가운데 정렬을 위해 margin을 auto로 설정 */
-        text-align: center; /* 내부 요소들을 가운데 정렬 */
+        margin: 20px auto;
+        text-align: center;
     }
 
     .gray {
@@ -23,21 +23,22 @@
         float: right;
     }
     
-    .mb_detail {
-    	clear: both;
-    	overflow: hidden;
-    	display: flex;
-	}
-	
-    .mb_content {
-	    /* display: flex; */
-	    display: block;
-    	white-space: pre-line;
-    	word-wrap: break-word;
-	}
-	
-	
-	
+   table {
+	   	border-collapse: collapse;
+	   	margin: 0 auto;
+	   	text-align: center;
+	   	width: 800px;
+	   	height: auto;
+   }
+   
+   td, tr {
+   		padding: 5px;
+   }
+   
+   table:hover {
+   		cursor: pointer;
+   	}
+    
 
 </style>
 <script type="text/javascript">
@@ -53,27 +54,27 @@
 					data: {mbno:mbno},
 					dataType: "json",
 					success: function (data) {
-						mbdetail.remove();
+						mb_content.hide();
 					},
 					error: function (error) {
 						alert("에러발생");
 					}
 				});
-            } else {
+            }
+            
+           	if (!(mb_content.is(":visible"))) {
 				$.ajax({
 					url: "./detail",
 					type: "get",
 					data: {mbno:mbno},
 					dataType: "json",
 					success: function (data) {
-							mbdetail.html('<div class="mb_content">' + data.content + '</div>');
+						mbdetail.html('<td colspan="7" class="mb_content">' + data.content + '</td>');
 					},
 					error: function (error) {
 						alert("에러발생");
 					}
 				});
-            	
-            	
             }
             
             
@@ -104,29 +105,30 @@
 	            		<button type="submit">검색</button>
 	            	</form>
             	</div>
-				<div class="div-table">
-					<div class="div-row">
-						<div class="div-cell">번호</div>
-						<div class="div-cell">카테고리</div>
-						<div class="div-cell">제목</div>
-						<div class="div-cell">작성자</div>
-						<div class="div-cell">날짜</div>
-						<div class="div-cell">조회수</div>
-						<div class="div-cell">삭제여부</div>
-					</div>
+				<table>
+					<tr>
+						<th>번호</th>
+						<th>카테고리</th>
+						<th>제목</th>
+						<th>작성자</th>
+						<th>날짜</th>
+						<th>조회수</th>
+						<th>삭제여부</th>
+					</tr>
 					<c:forEach items="${list}" var="row">
-					<div class="div-row <c:if test="${row.mb_del eq 0}">gray</c:if> mb_detail-container">
-						<div class="div-cell mb_no" style="flex-basis: 10px;">${row.mb_no}</div> 
-						<div class="div-cell">${row.b_catename}</div> 
-						<div class="div-cell title">${row.mb_title}</div>
-						<div class="div-cell">${row.m_name}(${row.m_id})</div>
-						<div class="div-cell">${row.mb_date}</div>
-						<div class="div-cell">${row.mb_read}</div>
-						<div class="div-cell">${row.mb_del}</div>
-					</div>
-					<div class="${row.mb_no } mb_detail"></div>
+					<tr class="<c:if test="${row.mb_del eq 0}">gray</c:if> mb_detail-container">
+						<td class="mb_no">${row.mb_no}</td> 
+						<td>${row.b_catename}</td> 
+						<td class="title">${row.mb_title}</td>
+						<td>${row.m_name}(${row.m_id})</td>
+						<td>${row.mb_date}</td>
+						<td>${row.mb_read}</td>
+						<td>${row.mb_del}</td>
+					</tr>
+					<tr class="${row.mb_no } mb_detail">
+					</tr>
 					</c:forEach>
-				</div>
+				</table>
 			</div>
 		</div>
 	</div>
