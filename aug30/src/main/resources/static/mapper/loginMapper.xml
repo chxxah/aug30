@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.peazh.web.dao.LoginDAO">
+
+	<select id="login" parameterType="LoginDTO">
+		SELECT m_name, m_id as id, count(*) as count
+		FROM members
+		WHERE m_id=#{id} AND AES_DECRYPT(UNHEX(m_pw),'sik')=#{pw}
+	</select>
+
+</mapper>

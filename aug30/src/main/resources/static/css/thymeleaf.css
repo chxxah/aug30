@@ -1,0 +1,70 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: 'GangwonState';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/GangwonState.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+	padding: 0;
+	margin: 0;
+}
+
+h1.title {
+	margin: 50px 0 20px 0;
+	text-align: center;
+}
+
+nav {
+	height: 100px;
+	width: 100%;
+	text-decoration: none;
+	line-height: 100px;
+	box-sizing: border-box;
+	font-family: 'GangwonState';
+	border-bottom: 2px solid #757575;
+}
+
+.main {
+	color: #a6c8ff;
+	font-size: x-large;
+	float: left;
+	width: 35%;
+	text-align: center;
+	margin: 0;
+	padding: 0;
+}
+
+.list {
+	width: 60%;
+	margin: 0;
+	padding: 0;
+	float: left;
+}
+
+ul {
+	text-align: center;
+	list-style: none;
+	overflow: hidden;
+	margin: 0;
+}
+
+li {
+	height: 100px;
+	line-height: 100px;
+	list-style: none;
+	float: left;
+	display: block;
+	width: 20%;
+}
+
+nav:hover {
+	cursor: pointer;
+}
+
+li:hover {
+	cursor: pointer;
+	color: #a6c8ff;
+}

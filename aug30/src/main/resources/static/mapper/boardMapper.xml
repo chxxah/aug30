@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.peazh.web.dao.BoardDAO">
+
+	<select id="list" resultType="BoardDTO">
+		SELECT bno, btitle, m_name, m_id, blike, bip, commentcount, uuid, bdate
+		FROM boardview
+		ORDER BY bno ASC
+		LIMIT 0, 10
+	</select>
+	
+	<select id="detail" parameterType="Integer" resultType="BoardDTO">
+		SELECT bno, btitle, bcontent, m_name, m_id, bdate, blike, bip, commentcount, uuid
+		FROM boardview
+		WHERE bno = #{bno}
+	</select>
+
+</mapper>

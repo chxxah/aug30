@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+	<nav th:fragment="menu">
+		<div>
+			<div th:onclick="|location.href='@{/}'|" class="main">
+				CHXXAH
+			</div>
+			<div class="list">
+				<ul>
+					<li th:onclick="|location.href='@{/board}'|">BOARD</li>
+					<li th:onclick="|location.href='@{/qna}'|">Q&A</li>
+					<li th:onclick="|location.href='@{/info}'|">INFORMATION</li>
+					<li th:onclick="|location.href='@{/login}'|">LOGIN</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div th:fragment="footer">
+		footer입니다.
+	</div>
+</body>
+</html>
