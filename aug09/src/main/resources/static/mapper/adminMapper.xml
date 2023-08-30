@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.poseidon.web.dao.AdminDAO">
+
+	<select id="adminLogin" parameterType="Map" resultType="Map">
+		<![CDATA[
+			SELECT
+			count(*) as count, m_name, m_grade
+			FROM members
+			WHERE m_id=#{id } AND AES_DECRYPT(UNHEX(m_pw),'sik')=#{pw } AND m_grade > 5
+		]]>
+	</select>
+	
+	<select id="list" resultType="Map">
+		SELECT * FROM notice ORDER BY nno DESC
+	</select>
+	
+	<insert id="noticeWrite" parameterType="Map">
+		INSERT INTO notice (ntitle, ncontent, m_no
+				<if test="upFile != null and upFile != ''">, norifile, nrealfile </if>)
+		VALUES (#{title}, #{content}, #{mno}
+				<if test="upFile != null and upFile != ''">, #{upFile}, #{realFile}</if>)
+	</insert>
+
+	<select id="noticeDetail" parameterType="Integer" resultType="String">
+		SELECT ncontent
+		FROM notice
+		WHERE nno=#{nno}
+	</select>
+	
+	<update id="noticeHide" parameterType="Integer">
+		UPDATE notice SET ndel = if(ndel = 1, 0, 1)
+		WHERE nno=#{nno}
+	</update>
+	
+	<select id="multiBoard" resultType="Map">
+		SELECT *
+		FROM setupboard
+		ORDER BY b_no ASC
+	</select>
+	
+	<insert id="multiBoardInsert" parameterType="Map">
+		INSERT INTO setupboard (mb_cate, b_catename, b_url, b_comment)
+		VALUES (#{cateNum}, #{name}, CONCAT('./multiboard?board=',#{cateNum}), #{comment})
+	</insert>
+	
+	<select id="memberList" resultType="Map">
+		SELECT m_no, m_id, m_name, m_joindate, m_addr, m_grade, m_birth, m_mbti, m_gender
+		FROM members
+	</select>
+	
+	<update id="gradeChange" parameterType="Map">
+		UPDATE members SET m_grade = #{grade} WHERE m_no=#{mno}
+	</update>
+	
+	<select id="post" parameterType="Map" resultType="Map">
+		SELECT mb.mb_no, mb.mb_title, mb.mb_read, mb.mb_del, mb.mb_board, mb.m_no, m.m_name, s.b_catename, m.m_id, DATE_FORMAT(mb.mb_date,"%Y-%m-%d") as mb_date,
+	    	(SELECT COUNT(*) FROM multiboard mb, members m
+	    	<where>
+	    		AND mb.m_no=m.m_no
+				<if test="cate gt 0">AND mb_board = #{cate}</if>
+				<choose>
+					<when test="searchN == 'title'">AND mb_title LIKE CONCAT('%', #{searchV}, '%')</when>
+					<when test="searchN == 'content'">AND mb_content LIKE CONCAT('%', #{searchV}, '%')</when>
+					<when test="searchN == 'nick'">AND m_name LIKE CONCAT('%', #{searchV}, '%')</when>
+					<when test="searchN == 'id'">AND m_id LIKE CONCAT('%', #{searchV}, '%')</when>
+				</choose>
+			</where>
+	    	) AS count
+		FROM multiboard mb
+		JOIN members m ON mb.m_no = m.m_no
+		JOIN setupboard s ON mb.mb_board = s.mb_cate
+		<where>
+			<if test="cate gt 0">AND mb_board = #{cate}</if>
+			<choose>
+				<when test="searchN == 'title'">AND mb_title LIKE CONCAT('%', #{searchV}, '%')</when>
+				<when test="searchN == 'content'">AND mb_content LIKE CONCAT('%', #{searchV}, '%')</when>
+				<when test="searchN == 'nick'">AND m_name LIKE CONCAT('%', #{searchV}, '%')</when>
+				<when test="searchN == 'id'">AND m_id LIKE CONCAT('%', #{searchV}, '%')</when>
+			</choose>
+		</where>
+		ORDER BY mb.mb_no DESC
+	</select>
+	
+	<select id="boardlist" resultType="Map">
+		SELECT *
+		FROM setupboard 
+	</select>
+	
+	<select id="content" parameterType="Integer" resultType="String">
+		SELECT mb_content
+		FROM multiboard
+		WHERE mb_no = #{mbno}
+	</select>
+
+</mapper>
